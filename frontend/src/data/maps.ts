@@ -1,96 +1,88 @@
-import type { GameMap } from '../types';
+import { GameMap } from '../types';
 
-// Each tile row uses the same width. # = wall, . = walkable floor, g = grass/debris, ~ = water/unsafe.
+/**
+ * MÃ TILE (TILE ID):
+ * 0: Sàn gỗ lớp học / Đường lát đá
+ * 1: Tường gạch / Hàng rào (Có va chạm - Solid)
+ * 2: Cỏ xanh tự nhiên (Đi được)
+ * 3: Bàn học / Chướng ngại vật (Solid)
+ * 4: Cửa chuyển cảnh / Cầu thang (Portal)
+ * 5: Vết Nứt Không Gian / Hố Nổ Dị Biến (Hiệu ứng phát sáng tím, Solid hoặc Sự kiện)
+ * 6: Cây cổ thụ sân trường (Solid)
+ * 7: Đống đổ nát / Lửa cháy (Solid)
+ */
 export const MAPS: Record<string, GameMap> = {
-  'safe-haven': {
-    id: 'safe-haven', name: 'Safe Haven', subtitle: 'Nơi trú ẩn — đêm thứ 412', safe: true,
+  classroom_day0: {
+    id: 'classroom_day0',
+    name: 'Phòng Học 10A - Trường THPT Hoàng Hôn',
+    dayLabel: 'NGÀY 0 - 17:45 CHIỀU',
+    width: 12,
+    height: 10,
+    ambientDarkness: 0.15,
     tiles: [
-      '################',
-      '#..............#',
-      '#..gg......gg..#',
-      '#..............#',
-      '#....###.......#',
-      '#..............#',
-      '#..g...........#',
-      '#..............#',
-      '#..............#',
-      '################',
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 3, 3, 0, 3, 3, 0, 3, 3, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 3, 3, 0, 3, 3, 0, 3, 3, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 3, 3, 0, 3, 3, 0, 3, 3, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ],
-    exits: [{ x: 14, y: 7, targetMapId: 'old-road', targetX: 1, targetY: 7, label: 'OLD ROAD →' }],
-    items: [],
+    portals: [
+      { x: 10, y: 8, targetMap: 'school_gate_day0', targetX: 7, targetY: 2 }
+    ]
   },
-  'old-road': {
-    id: 'old-road', name: 'Old Road', subtitle: 'Con đường đã bị xóa khỏi bản đồ', safe: false,
+
+  school_gate_day0: {
+    id: 'school_gate_day0',
+    name: 'Khuôn Viên & Cổng Trường (Tâm Chấn Vụ Nổ)',
+    dayLabel: 'NGÀY 0 - HIỆN TƯỢNG DỊ BIẾN',
+    width: 15,
+    height: 12,
+    ambientDarkness: 0.35,
     tiles: [
-      '################',
-      '#..............#',
-      '#..gggg........#',
-      '#..............#',
-      '#.......###....#',
-      '#..............#',
-      '#....gg........#',
-      '#..............#',
-      '#..............#',
-      '################',
+      [1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1],
+      [1, 6, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 6, 1],
+      [1, 2, 2, 6, 2, 2, 0, 0, 0, 2, 2, 6, 2, 2, 1],
+      [1, 2, 2, 2, 2, 7, 0, 0, 0, 2, 2, 2, 2, 2, 1],
+      [1, 6, 2, 2, 2, 2, 0, 0, 0, 7, 2, 2, 2, 6, 1],
+      [1, 2, 2, 7, 2, 0, 0, 0, 0, 0, 2, 7, 2, 2, 1],
+      [1, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1],
+      [1, 6, 2, 2, 7, 0, 5, 5, 5, 0, 7, 2, 2, 6, 1],
+      [1, 1, 1, 1, 1, 0, 5, 5, 5, 0, 1, 1, 1, 1, 1],
+      [1, 7, 2, 2, 2, 0, 0, 5, 0, 0, 2, 2, 2, 7, 1],
+      [1, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ],
-    exits: [
-      { x: 1, y: 7, targetMapId: 'safe-haven', targetX: 13, targetY: 7, label: '← SAFE HAVEN' },
-      { x: 14, y: 7, targetMapId: 'abandoned-town', targetX: 1, targetY: 7, label: 'ABANDONED TOWN →' },
-    ],
-    items: [{ id: 'old-key-pickup', itemId: 'old-key', name: 'Old Key', icon: '🗝️', x: 10, y: 5, description: 'Một chiếc chìa khóa lạnh ngắt, khắc ký hiệu Ward 0.' }],
+    portals: [
+      { x: 7, y: 0, targetMap: 'classroom_day0', targetX: 10, targetY: 7 }
+    ]
   },
-  'abandoned-town': {
-    id: 'abandoned-town', name: 'Abandoned Town', subtitle: 'Những ô cửa vẫn còn đèn', safe: false,
+
+  sanctuary_day432: {
+    id: 'sanctuary_day432',
+    name: 'Phế Tích Cổng Trường - Tiền Đồn Hầm Ngục',
+    dayLabel: 'NGÀY 432 - HẬU ĐẠI DỊ BIẾN',
+    width: 15,
+    height: 12,
+    ambientDarkness: 0.5,
     tiles: [
-      '################',
-      '#..............#',
-      '#..###.........#',
-      '#..............#',
-      '#......gg......#',
-      '#..............#',
-      '#.........###..#',
-      '#..............#',
-      '#..............#',
-      '################',
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 7, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 7, 1],
+      [1, 2, 6, 2, 0, 3, 3, 0, 3, 3, 0, 2, 6, 2, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 1],
+      [1, 7, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 1],
+      [1, 2, 2, 0, 0, 0, 5, 5, 5, 0, 0, 0, 2, 2, 1],
+      [1, 6, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 1],
+      [1, 1, 1, 1, 1, 0, 0, 4, 0, 0, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ],
-    exits: [
-      { x: 1, y: 7, targetMapId: 'old-road', targetX: 13, targetY: 7, label: '← OLD ROAD' },
-      { x: 14, y: 7, targetMapId: 'hospital', targetX: 1, targetY: 7, label: 'HOSPITAL →' },
-    ], items: [],
-  },
-  hospital: {
-    id: 'hospital', name: 'St. Oran Hospital', subtitle: 'Khu điều trị đã bị niêm phong', safe: false,
-    tiles: [
-      '################',
-      '#..............#',
-      '#..####........#',
-      '#..............#',
-      '#...........g..#',
-      '#..............#',
-      '#....####......#',
-      '#..............#',
-      '#..............#',
-      '################',
-    ],
-    exits: [
-      { x: 1, y: 7, targetMapId: 'abandoned-town', targetX: 13, targetY: 7, label: '← ABANDONED TOWN' },
-      { x: 14, y: 7, targetMapId: 'city', targetX: 1, targetY: 7, label: 'CITY →' },
-    ], items: [],
-  },
-  city: {
-    id: 'city', name: 'Greybridge City', subtitle: 'Tín hiệu phát ra từ trung tâm thành phố', safe: false,
-    tiles: [
-      '################',
-      '#..............#',
-      '#..##.....##...#',
-      '#..............#',
-      '#......gg......#',
-      '#..............#',
-      '#...##......##.#',
-      '#..............#',
-      '#..............#',
-      '################',
-    ],
-    exits: [{ x: 1, y: 7, targetMapId: 'hospital', targetX: 13, targetY: 7, label: '← HOSPITAL' }], items: [],
-  },
+    portals: []
+  }
 };

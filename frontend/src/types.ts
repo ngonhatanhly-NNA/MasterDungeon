@@ -1,88 +1,48 @@
-export type Direction = 'up' | 'down' | 'left' | 'right';
-export type TileCode = '#' | '.' | 'g' | '~';
+export type Direction = 'DOWN' | 'UP' | 'LEFT' | 'RIGHT';
+
+export type GamePhase = 'TITLE' | 'PROLOGUE_INTRO' | 'PLAYING' | 'TIMESKIP_CUTSCENE';
 
 export interface Position {
   x: number;
   y: number;
 }
 
-export interface MapExit extends Position {
-  targetMapId: string;
-  targetX: number;
-  targetY: number;
-  label: string;
+export interface CharacterPalette {
+  hair: string;
+  skin: string;
+  shirt: string;
+  pants: string;
+  accent: string;
 }
 
-export interface ItemSpawn extends Position {
-  id: string;
-  itemId: string;
-  name: string;
-  icon: string;
-  description?: string;
-}
-
-export interface GameMap {
-  id: string;
-  name: string;
-  subtitle: string;
-  tiles: string[];
-  exits: MapExit[];
-  items: ItemSpawn[];
-  safe: boolean;
-}
-
-export interface NPC {
+export interface NPCData {
   id: string;
   name: string;
   role: string;
   mapId: string;
   x: number;
   y: number;
-  icon: string;
+  direction: Direction;
+  palette: CharacterPalette;
+  dialogueId: string;
 }
 
-export interface ItemDefinition {
+export interface TilePortal {
+  x: number;
+  y: number;
+  targetMap: string;
+  targetX: number;
+  targetY: number;
+  requiredQuestFlag?: string;
+}
+
+export interface GameMap {
   id: string;
   name: string;
-  icon: string;
-  description: string;
-  stackable: boolean;
-}
-
-export interface QuestState {
-  started: boolean;
-  foundKey: boolean;
-  completed: boolean;
-}
-
-export interface DialogueChoice {
-  id: string;
-  text: string;
-}
-
-export interface DialogueState {
-  npcId: string;
-  lines: string[];
-  index: number;
-  choices?: DialogueChoice[];
-}
-
-export interface GameState {
-  mapId: string;
-  player: Position;
-  direction: Direction;
-  inventory: Record<string, number>;
-  collectedItems: string[];
-  flags: Record<string, boolean>;
-  quest: QuestState;
-  dialogue: DialogueState | null;
-  journal: string[];
-  bond: number;
-  toast: string;
-}
-
-export interface SaveData {
-  version: 1;
-  savedAt: string;
-  state: Omit<GameState, 'dialogue' | 'toast'>;
+  dayLabel: string;
+  width: number;
+  height: number;
+  ambientDarkness: number; // 0 = sáng, 0.4 = chiều tà, 0.65 = hầm ngục / dị biến
+  tiles: number[][];
+  portals: TilePortal[];
 }

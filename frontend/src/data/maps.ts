@@ -1,0 +1,96 @@
+import type { GameMap } from '../types';
+
+// Each tile row uses the same width. # = wall, . = walkable floor, g = grass/debris, ~ = water/unsafe.
+export const MAPS: Record<string, GameMap> = {
+  'safe-haven': {
+    id: 'safe-haven', name: 'Safe Haven', subtitle: 'Nơi trú ẩn — đêm thứ 412', safe: true,
+    tiles: [
+      '################',
+      '#..............#',
+      '#..gg......gg..#',
+      '#..............#',
+      '#....###.......#',
+      '#..............#',
+      '#..g...........#',
+      '#..............#',
+      '#..............#',
+      '################',
+    ],
+    exits: [{ x: 14, y: 7, targetMapId: 'old-road', targetX: 1, targetY: 7, label: 'OLD ROAD →' }],
+    items: [],
+  },
+  'old-road': {
+    id: 'old-road', name: 'Old Road', subtitle: 'Con đường đã bị xóa khỏi bản đồ', safe: false,
+    tiles: [
+      '################',
+      '#..............#',
+      '#..gggg........#',
+      '#..............#',
+      '#.......###....#',
+      '#..............#',
+      '#....gg........#',
+      '#..............#',
+      '#..............#',
+      '################',
+    ],
+    exits: [
+      { x: 1, y: 7, targetMapId: 'safe-haven', targetX: 13, targetY: 7, label: '← SAFE HAVEN' },
+      { x: 14, y: 7, targetMapId: 'abandoned-town', targetX: 1, targetY: 7, label: 'ABANDONED TOWN →' },
+    ],
+    items: [{ id: 'old-key-pickup', itemId: 'old-key', name: 'Old Key', icon: '🗝️', x: 10, y: 5, description: 'Một chiếc chìa khóa lạnh ngắt, khắc ký hiệu Ward 0.' }],
+  },
+  'abandoned-town': {
+    id: 'abandoned-town', name: 'Abandoned Town', subtitle: 'Những ô cửa vẫn còn đèn', safe: false,
+    tiles: [
+      '################',
+      '#..............#',
+      '#..###.........#',
+      '#..............#',
+      '#......gg......#',
+      '#..............#',
+      '#.........###..#',
+      '#..............#',
+      '#..............#',
+      '################',
+    ],
+    exits: [
+      { x: 1, y: 7, targetMapId: 'old-road', targetX: 13, targetY: 7, label: '← OLD ROAD' },
+      { x: 14, y: 7, targetMapId: 'hospital', targetX: 1, targetY: 7, label: 'HOSPITAL →' },
+    ], items: [],
+  },
+  hospital: {
+    id: 'hospital', name: 'St. Oran Hospital', subtitle: 'Khu điều trị đã bị niêm phong', safe: false,
+    tiles: [
+      '################',
+      '#..............#',
+      '#..####........#',
+      '#..............#',
+      '#...........g..#',
+      '#..............#',
+      '#....####......#',
+      '#..............#',
+      '#..............#',
+      '################',
+    ],
+    exits: [
+      { x: 1, y: 7, targetMapId: 'abandoned-town', targetX: 13, targetY: 7, label: '← ABANDONED TOWN' },
+      { x: 14, y: 7, targetMapId: 'city', targetX: 1, targetY: 7, label: 'CITY →' },
+    ], items: [],
+  },
+  city: {
+    id: 'city', name: 'Greybridge City', subtitle: 'Tín hiệu phát ra từ trung tâm thành phố', safe: false,
+    tiles: [
+      '################',
+      '#..............#',
+      '#..##.....##...#',
+      '#..............#',
+      '#......gg......#',
+      '#..............#',
+      '#...##......##.#',
+      '#..............#',
+      '#..............#',
+      '################',
+    ],
+    exits: [{ x: 1, y: 7, targetMapId: 'hospital', targetX: 13, targetY: 7, label: '← HOSPITAL' }], items: [],
+  },
+};

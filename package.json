@@ -1,0 +1,11 @@
+{
+  "name": "zombie-rpg",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Story-driven 2D zombie RPG starter",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview"
+  }
+}
